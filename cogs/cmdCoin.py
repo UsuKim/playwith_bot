@@ -247,10 +247,10 @@ class cmdCoin(commands.Cog):
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data WHERE id = (?)", (ctx.author.id))
+            cur.execute("SELECT * FROM user_data WHERE id = %s", (ctx.author.id))
             data = cur.fetchone()
             if data == None:
-                cur.execute("INSERT INTO user_data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",(ctx.author.id, 100000, 0, 0, 0, 0, 0, 0, 1))
+                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(ctx.author.id))
                 embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
             else:
                 all_money = data[1] + (self.bot.n_btc * data[2]) + (self.bot.n_eth * data[3]) + (self.bot.n_ltc * data[4]) + (self.bot.n_dot * data[5]) + (self.bot.n_ada * data[6]) + (self.bot.n_doge * data[7])
