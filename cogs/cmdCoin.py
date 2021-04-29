@@ -85,7 +85,7 @@ class cmdCoin(commands.Cog):
     async def cmdBuy(self, ctx, *args):
         try:
             _id = args[0]
-            if args[1] == '모두':
+            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all':
                 _all = True
                 amount = 1
             else:
@@ -205,7 +205,7 @@ class cmdCoin(commands.Cog):
     async def cmdSell(self, ctx, *args):
         try:
             _id = args[0]
-            if args[1] == '모두':
+            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all':
                 _all = True
                 amount = 1
             else:
@@ -367,7 +367,6 @@ class cmdCoin(commands.Cog):
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
-
 
 def setup(bot):
     bot.add_cog(cmdCoin(bot))
