@@ -339,7 +339,7 @@ class cmdCoin(commands.Cog):
             conn.close()
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["용돈", "daily", "돈받기", "월급", "일일보상"])
+    @commands.command(aliases=["용돈", "daily", "돈받기", "월급", "일일보상", "일일"])
     async def cmdDaily(self, ctx):
         async with ctx.typing():
             DATABASE_URL = os.environ['DATABASE_URL']

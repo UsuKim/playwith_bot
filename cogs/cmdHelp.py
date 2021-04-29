@@ -12,9 +12,10 @@ class cmdHelp(commands.Cog):
         embed.set_author(name="「  PlayBot 도움말  」", icon_url="https://cdn.discordapp.com/avatars/835763308509396993/ea999c4a1977e89642a1d520622e288f.png?size=128")
         embed.add_field(name="도움말 열기", value="`ㅍ도움`, `ㅍhelp`")
         embed.add_field(name="코인 가격 목록", value="`ㅍ코인`, `ㅍ가격`, `ㅍcoin`")
-        embed.add_field(name="계좌 정보", value="`ㅍ지갑`, `ㅍ계좌`, `ㅍwallet`")
+        embed.add_field(name="계좌 정보", value="`ㅍ지갑`, `ㅍ돈`, `ㅍwallet`")
         embed.add_field(name="코인 구매", value="`ㅍ구매 [이름] [개수]`, (`ㅍ매수`, `ㅍbuy`)")
         embed.add_field(name="코인 판매", value="`ㅍ판매 [이름] [개수]`, (`ㅍ매도`, `ㅍsell`)")
+        embed.add_field(name="일일 보상", value="`ㅍ돈받기`, `ㅍ일일보상`, `ㅍdaily`")
         await ctx.send(embed=embed)
 
 def setup(bot):
