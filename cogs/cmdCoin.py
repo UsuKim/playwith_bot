@@ -247,7 +247,7 @@ class cmdCoin(commands.Cog):
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data WHERE id = ?", (ctx.author.id,))
+            cur.execute("SELECT * FROM user_data WHERE id = (?)", (ctx.author.id))
             data = cur.fetchone()
             if data == None:
                 cur.execute("INSERT INTO user_data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",(ctx.author.id, 100000, 0, 0, 0, 0, 0, 0, 1))
