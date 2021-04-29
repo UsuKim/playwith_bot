@@ -364,6 +364,7 @@ class cmdCoin(commands.Cog):
                         time += f'{self.bot.m}분 '
                     time += f'{self.bot.s}초'
                     embed=discord.Embed(title='이미 일일 보상을 받았습니다.',description=f'```남은 시간: {time}```',color=0xb40000)
+                    embed.set_footer(text=f'`UTC 00:00`에 초기화')
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
