@@ -4,6 +4,8 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from datetime import timedelta
 
+# https://discord.com/oauth2/authorize?client_id=835763308509396993&scope=bot
+
 # 업비트
 upbit = Upbitpy()
 

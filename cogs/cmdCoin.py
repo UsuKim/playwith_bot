@@ -368,6 +368,20 @@ class cmdCoin(commands.Cog):
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["한강", "한강온도", "한강물"])
+    async def cmdHangang(self, ctx):
+        async with ctx.typing():
+            url = 'https://api.qwer.pw/request/hangang_temp'
+            params = {'apikey': 'guest'}
+            res = requests.get(url, params=params)
+            try:
+                temp = res.json()[1]['respond']['temp']
+            except:
+                embed=discord.Embed(title='오류가 발생했습니다.',color=0xb40000)
+            else:
+                embed=discord.Embed(title='현재 한강물 온도', description=f'```{temp}℃```', color=0x3a94ce)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(cmdCoin(bot))
