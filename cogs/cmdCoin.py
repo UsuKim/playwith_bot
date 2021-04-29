@@ -1,4 +1,4 @@
-import asyncio,discord,os,random,psycopg2
+import asyncio,discord,os,random,psycopg2,requests
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle

@@ -24,7 +24,6 @@ PyJWT==1.7.1
 pylint==2.5.3
 pyperclip==1.8.1
 requests==2.21.0
-schedule==1.0.0
 screeninfo==0.6.6
 six==1.15.0
 soupsieve==2.2.1

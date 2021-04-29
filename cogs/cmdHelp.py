@@ -16,6 +16,7 @@ class cmdHelp(commands.Cog):
         embed.add_field(name="코인 구매", value="`ㅍ구매 [이름] [개수]`, (`ㅍ매수`, `ㅍbuy`)")
         embed.add_field(name="코인 판매", value="`ㅍ판매 [이름] [개수]`, (`ㅍ매도`, `ㅍsell`)")
         embed.add_field(name="일일 보상", value="`ㅍ돈받기`, `ㅍ일일보상`, `ㅍdaily`")
+        embed.add_field(name="한강 온도", value="`ㅍ한강`, `ㅍ한강물`")
         await ctx.send(embed=embed)
 
 def setup(bot):
