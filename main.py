@@ -1,4 +1,4 @@
-import asyncio,discord,os,random,sqlite3
+import asyncio,discord,os,random,psycopg2
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
@@ -6,7 +6,7 @@ from itertools import cycle
 # 업비트
 upbit = Upbitpy()
 
-#토큰 가져오기
+# 토큰 가져오기
 token_path = os.path.dirname( os.path.abspath( __file__ ) )+"/token.txt"
 t = open(token_path,"r",encoding="utf-8")
 token = t.read().split()[0]
@@ -48,11 +48,12 @@ for filename in os.listdir("cogs"):
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(playing)))
 
+# 가격 불러오는 시간
 @tasks.loop(seconds=1)
 async def change_time():
     bot.time -= 1
 
-#가격 불러오기
+# 가격 불러오기
 @tasks.loop(seconds=180)
 async def change_price():
     bot.btc, bot.eth, bot.doge, bot.ada, bot.dot, bot.ltc = bot.n_btc, bot.n_eth, bot.n_doge, bot.n_ada, bot.n_dot, bot.n_ltc

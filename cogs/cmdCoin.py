@@ -1,4 +1,4 @@
-import asyncio,discord,os,random,sqlite3
+import asyncio,discord,os,random,psycopg2
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
@@ -84,7 +84,8 @@ class cmdCoin(commands.Cog):
     @commands.command(aliases=["구매", "매수", "구입", "buy"])
     async def cmdBuy(self, ctx, id: str, amount: int):
         async with ctx.typing():
-            conn = sqlite3.connect("price.db")
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
             cur.execute("SELECT * FROM user_data WHERE id = ?",(ctx.author.id,))
             data = cur.fetchone()
@@ -163,7 +164,8 @@ class cmdCoin(commands.Cog):
     @commands.command(aliases=["판매", "매도", "sell"])
     async def cmdSell(self, ctx, id: str, amount: int):
         async with ctx.typing():
-            conn = sqlite3.connect("price.db")
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
             cur.execute("SELECT * FROM user_data WHERE id = ?",(ctx.author.id,))
             data = cur.fetchone()
@@ -185,7 +187,7 @@ class cmdCoin(commands.Cog):
                 
                 elif id == '이더리움' or id == 'eth' or id == '이더':
                     if amount > data[3]:
-                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[2]} 개```',color=0xb40000)
+                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[3]} 개```',color=0xb40000)
                     else:
                         coin = data[3] - amount
                         cur.execute("UPDATE user_data SET eth = ? WHERE id = ?",(coin, ctx.author.id))
@@ -195,7 +197,7 @@ class cmdCoin(commands.Cog):
                 
                 elif id == '라이트코인' or id == 'ltc' or id == '라이트':
                     if amount > data[4]:
-                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[2]} 개```',color=0xb40000)
+                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[4]} 개```',color=0xb40000)
                     else:
                         coin = data[4] - amount
                         cur.execute("UPDATE user_data SET ltc = ? WHERE id = ?",(coin, ctx.author.id))
@@ -205,7 +207,7 @@ class cmdCoin(commands.Cog):
                 
                 elif id == '폴카닷' or id == 'dot' or id == '폴' or id == '폴카':
                     if amount > data[5]:
-                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[2]} 개```',color=0xb40000)
+                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[5]} 개```',color=0xb40000)
                     else:
                         coin = data[5] - amount
                         cur.execute("UPDATE user_data SET dot = ? WHERE id = ?",(coin, ctx.author.id))
@@ -215,7 +217,7 @@ class cmdCoin(commands.Cog):
                 
                 elif id == '에이다' or id == 'ada' or id == '에' or id == '에이':
                     if amount > data[6]:
-                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[2]} 개```',color=0xb40000)
+                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[6]} 개```',color=0xb40000)
                     else:
                         coin = data[6] - amount
                         cur.execute("UPDATE user_data SET ada = ? WHERE id = ?",(coin, ctx.author.id))
@@ -225,7 +227,7 @@ class cmdCoin(commands.Cog):
                 
                 elif id == '도지코인' or id == 'doge' or id == '도지':
                     if amount > data[7]:
-                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[2]} 개```',color=0xb40000)
+                        embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[7]} 개```',color=0xb40000)
                     else:
                         coin = data[7] - amount
                         cur.execute("UPDATE user_data SET doge = ? WHERE id = ?",(coin, ctx.author.id))
@@ -242,7 +244,8 @@ class cmdCoin(commands.Cog):
     @commands.command(aliases=["지갑", "계좌", "정보", "wallet", "info"])
     async def cmdInfo(self, ctx):
         async with ctx.typing():
-            conn = sqlite3.connect("price.db")
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
             cur.execute("SELECT * FROM user_data WHERE id = ?",(ctx.author.id,))
             data = cur.fetchone()

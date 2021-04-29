@@ -13,8 +13,8 @@ class cmdHelp(commands.Cog):
         embed.add_field(name="도움말 열기", value="`ㅍ도움`, `ㅍhelp`")
         embed.add_field(name="코인 가격 목록", value="`ㅍ코인`, `ㅍ가격`, `ㅍcoin`")
         embed.add_field(name="계좌 정보", value="`ㅍ지갑`, `ㅍ계좌`, `ㅍwallet`")
-        embed.add_field(name="코인 구매", value="`ㅍ구매`, `ㅍ매수`, `ㅍbuy`")
-        embed.add_field(name="코인 판매", value="`ㅍ판매`, `ㅍ매도`, `ㅍsell`")
+        embed.add_field(name="코인 구매", value="`ㅍ구매 [이름] [개수]`, (`ㅍ매수`, `ㅍbuy`)")
+        embed.add_field(name="코인 판매", value="`ㅍ판매 [이름] [개수]`, (`ㅍ매도`, `ㅍsell`)")
         await ctx.send(embed=embed)
 
 def setup(bot):
