@@ -1,7 +1,8 @@
-import asyncio,discord,os,random,psycopg2
+import asyncio,discord,os,random,psycopg2,datetime
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
+from datetime import timedelta
 
 # 업비트
 upbit = Upbitpy()
@@ -48,10 +49,26 @@ for filename in os.listdir("cogs"):
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(playing)))
 
-# 가격 불러오는 시간
+# 초당 실행
 @tasks.loop(seconds=1)
 async def change_time():
     bot.time -= 1
+    today = datetime.datetime.today()
+    tomorrow = today + timedelta(days=1)
+    t = datetime.datetime(tomorrow.year, tomorrow.month, tomorrow.day, 0, 0, 0) - today
+    bot.h = t.seconds // 3600
+    bot.m = (t.seconds % 3600) // 60
+    bot.s = t.seconds % 60
+    if bot.h == 0:
+        bot.h = ''
+    if bot.m == 0:
+        bot.m = ''
+    if bot.s == 0:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM user_data")
+        cur.execute("UPDATE user_data SET daily = %s",(1,))
 
 # 가격 불러오기
 @tasks.loop(seconds=180)

@@ -321,7 +321,7 @@ class cmdCoin(commands.Cog):
                 conn.close()
         await ctx.send(embed=embed)
     
-    @commands.command(aliases=["지갑", "계좌", "정보", "wallet", "info"])
+    @commands.command(aliases=["지갑", "계좌", "정보", "돈", "wallet", "info", "money"])
     async def cmdInfo(self, ctx):
         async with ctx.typing():
             DATABASE_URL = os.environ['DATABASE_URL']
@@ -335,6 +335,35 @@ class cmdCoin(commands.Cog):
             else:
                 all_money = data[1] + (self.bot.n_btc * data[2]) + (self.bot.n_eth * data[3]) + (self.bot.n_ltc * data[4]) + (self.bot.n_dot * data[5]) + (self.bot.n_ada * data[6]) + (self.bot.n_doge * data[7])
                 embed=discord.Embed(title="계좌 정보", description=f"```총자산: {format(all_money,',')} ₩\n잔액　: {format(data[1],',')} ₩\n\n비트코인　: {data[2]}\n이더리움　: {data[3]}\n라이트코인: {data[4]}\n폴카닷　　: {data[5]}\n에이다　　: {data[6]}\n도지코인　: {data[7]}```", color=0x8be653)
+            conn.commit()
+            conn.close()
+        await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["용돈", "daily", "돈받기", "월급", "일일보상"])
+    async def cmdDaily(self, ctx):
+        async with ctx.typing():
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
+            data = cur.fetchone()
+            if data == None:
+                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
+                embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
+            else:
+                if data[14] == 1:
+                    money = data[1] + 10000
+                    cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                    cur.execute("UPDATE user_data SET daily = %s WHERE id = %s",(0, str(ctx.author.id)))
+                    embed=discord.Embed(title="일일 보상을 받았습니다!", description=f'```일일 보상: 10,000 ₩\n잔여 금액: {format(money,",")} ₩```', color=0x8be653)
+                else:
+                    time = ''
+                    if self.bot.h != '':
+                        time += f'{self.bot.h}시간 '
+                    if self.bot.m != '':
+                        time += f'{self.bot.m}분 '
+                    time += f'{self.bot.s}초'
+                    embed=discord.Embed(title='이미 일일 보상을 받았습니다.',description=f'```남은 시간: {time}```',color=0xb40000)
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
