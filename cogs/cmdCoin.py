@@ -87,10 +87,10 @@ class cmdCoin(commands.Cog):
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data WHERE id = ?",(ctx.author.id,))
+            cur.execute("SELECT * FROM user_data WHERE id = ?" % (ctx.author.id))
             data = cur.fetchone()
             if data == None:
-                cur.execute("INSERT INTO user_data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",(ctx.author.id, 100000, 0, 0, 0, 0, 0, 0, 1))
+                cur.execute("INSERT INTO user_data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (ctx.author.id, 100000, 0, 0, 0, 0, 0, 0, 1))
                 embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
             elif amount < 1:
                 embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
@@ -247,7 +247,7 @@ class cmdCoin(commands.Cog):
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data WHERE id = ?",(ctx.author.id,))
+            cur.execute("SELECT * FROM user_data WHERE id = ?", (ctx.author.id,))
             data = cur.fetchone()
             if data == None:
                 cur.execute("INSERT INTO user_data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",(ctx.author.id, 100000, 0, 0, 0, 0, 0, 0, 1))
