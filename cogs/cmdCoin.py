@@ -87,7 +87,10 @@ class cmdCoin(commands.Cog):
             _id = args[0]
             amount = int(args[1])
         except:
-            embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
+            if len(args) != 2:
+                embed=discord.Embed(title="인수의 개수가 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
+            else:
+                embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
         else:
             async with ctx.typing():
                 DATABASE_URL = os.environ['DATABASE_URL']
@@ -175,7 +178,10 @@ class cmdCoin(commands.Cog):
             _id = args[0]
             amount = int(args[1])
         except:
-            embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
+            if len(args) != 2:
+                embed=discord.Embed(title="인수의 개수가 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
+            else:
+                embed=discord.Embed(title="판매 수량이 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
         else:
             async with ctx.typing():
                 DATABASE_URL = os.environ['DATABASE_URL']
@@ -186,6 +192,8 @@ class cmdCoin(commands.Cog):
                 if data == None:
                     cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
                     embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
+                elif len(args) != 2:
+                    embed=discord.Embed(title="인수의 개수가 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
                 elif amount < 1:
                     embed=discord.Embed(title="판매 수량이 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
                 else:
