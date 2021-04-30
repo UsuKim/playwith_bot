@@ -71,6 +71,8 @@ async def change_time():
         cur = conn.cursor()
         cur.execute("SELECT * FROM user_data")
         cur.execute("UPDATE user_data SET daily = %s",(1,))
+        conn.commit()
+        conn.close()
 
 # 가격 불러오기
 @tasks.loop(seconds=180)
