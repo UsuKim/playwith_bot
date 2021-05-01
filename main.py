@@ -65,7 +65,7 @@ async def change_time():
         bot.h = ''
     if bot.m == 0:
         bot.m = ''
-    if bot.s == 0:
+    if t.seconds == 0:
         DATABASE_URL = os.environ['DATABASE_URL']
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()
