@@ -137,8 +137,7 @@ async def change_price():
         time.append(i*3/60)
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "NanumGothicCoding"
-    fig = plt.figure()
-    fig.figsize([15,15])
+    fig = plt.figure().figsize([15,15])
     ax1 = fig.add_subplot(111)
     a = ax1.plot(time, btc, color='darkorange', label="비트코인")
     ax1.set_ylim([min(btc)-min(btc)/500, max(btc)+max(btc)/500])
