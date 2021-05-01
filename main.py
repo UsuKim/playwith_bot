@@ -136,7 +136,7 @@ async def change_price():
         doge.append(data[i][6] * 1000)
         time.append(i*3/60)
     matplotlib.rcParams['axes.unicode_minus'] = False
-    matplotlib.rcParams['font.family'] = "AppleGothic"
+    matplotlib.rcParams['font.family'] = "NanumGothicCoding"
     plt.figure()
     plt.plot(time, btc, color='darkorange', label="비트코인")
     plt.plot(time, eth, color='skyblue', label="이더리움")
@@ -151,9 +151,6 @@ async def change_price():
     plt.legend(loc='upper left')
     plt.savefig('graph.png')
     print(btc, eth, ltc, dot, ada, doge, time)
-    flist = matplotlib.font_manager.get_fontconfig_fonts()
-    names = [matplotlib.font_manager.FontProperties(fname=fname).get_name() for fname in flist]
-    print(names)
 
 # 봇 시작
 @bot.event
