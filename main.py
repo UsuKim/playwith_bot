@@ -146,7 +146,7 @@ async def change_price():
     plt.twinx()
     plt.plot(time, eth, color='skyblue', label="이더리움")
     plt.ylim([min(eth), max(eth)])
-    plt.yticks(range(0,6), ('', '', '', '', '', ''))
+    # plt.yticks(range(0,6), ('', '', '', '', '', ''))
     plt.legend(loc=(0.02, 0.85))
     plt.twinx()
     plt.plot(time, ltc, color='royalblue', label="라이트코인")
