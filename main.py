@@ -128,21 +128,26 @@ async def change_price():
     doge = []
     time = []
     for i in range(len(data)):
-        btc.append(int(data[i][1]**0.4))
-        eth.append(int(data[i][2]**0.47))
-        ltc.append(int(data[i][3]**0.53))
-        dot.append(int(data[i][4]**0.61))
-        ada.append(int(data[i][5]**0.84))
+        btc.append(data[i][1])
+        eth.append(data[i][2])
+        ltc.append(data[i][3])
+        dot.append(data[i][4])
+        ada.append(data[i][5])
         doge.append(data[i][6])
         time.append(i*3/60)
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "NanumGothicCoding"
     plt.figure()
     plt.plot(time, btc, color='darkorange', label="비트코인")
+    plt.twinx()
     plt.plot(time, eth, color='skyblue', label="이더리움")
+    plt.twinx()
     plt.plot(time, ltc, color='royalblue', label="라이트코인")
+    plt.twinx()
     plt.plot(time, dot, color='mediumvioletred', label="폴카닷")
+    plt.twinx()
     plt.plot(time, ada, color='mediumblue', label="에이다")
+    plt.twinx()
     plt.plot(time, doge, color='gold', label="도지코인")
     plt.ylabel('주가 (₩)')
     plt.xlabel('시간 (h)')
