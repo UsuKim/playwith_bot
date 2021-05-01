@@ -144,7 +144,7 @@ async def change_price():
     ax1.set_ylim([min(btc)-min(btc)/500, max(btc)+max(btc)/500])
     ax1.set_xlabel('시간 (h)')
     ax1.tick_params(axis='y', length=0, labelcolor='white')
-    plt.title('주식 그래프', loc='right')
+    plt.title('시세 그래프', loc='right')
     ax2 = ax1.twinx()
     b = ax2.plot(time, eth, color='skyblue', label="이더리움")
     ax2.set_ylim([min(eth)-min(eth)/500, max(eth)+max(eth)/500])
