@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from datetime import timedelta
 import matplotlib.pyplot as plt
+import matplotlib.font_manager
 
 # https://discord.com/oauth2/authorize?client_id=835763308509396993&scope=bot
 
@@ -149,6 +150,10 @@ async def change_price():
     plt.title('주식 그래프', loc='right')
     plt.legend(loc='upper left')
     plt.savefig('graph.png')
+    print(btc, eth, ltc, dot, ada, doge, time)
+    flist = matplotlib.font_manager.get_fontconfig_fonts()
+    names = [matplotlib.font_manager.FontProperties(fname=fname).get_name() for fname in flist]
+    print(names)
 
 # 봇 시작
 @bot.event
