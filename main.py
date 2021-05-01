@@ -134,7 +134,7 @@ async def change_price():
         dot.append(data[i][4] * 10)
         ada.append(data[i][5] * 100)
         doge.append(data[i][6] * 1000)
-        time.append(i*3//60)
+        time.append(i*3/60)
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "AppleGothic"
     plt.figure()
