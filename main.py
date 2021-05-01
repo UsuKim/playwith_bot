@@ -166,7 +166,9 @@ async def change_price():
     ax6.tick_params(axis='y', length=0, labelcolor='white')
     lns = a+b+c+d+e+f
     labs = [l.get_label() for l in lns]
-    ax1.legend(lns, labs, loc=2, framealpha=0.9).set_zorder(100)
+    leg = ax1.legend(lns, labs, loc=2, framealpha=0.9)
+    leg.remove()
+    ax6.add_artist(leg)
     plt.savefig('graph.png')
     print(btc, eth, ltc, dot, ada, doge, time)
 
