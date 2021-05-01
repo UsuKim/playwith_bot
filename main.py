@@ -128,12 +128,12 @@ async def change_price():
     doge = []
     time = []
     for i in range(len(data)):
-        btc.append(data[i][0] // 100)
-        eth.append(data[i][1] // 10)
-        ltc.append(data[i][2])
-        dot.append(data[i][3] * 10)
-        ada.append(data[i][4] * 100)
-        doge.append(data[i][5] * 1000)
+        btc.append(data[i][1] // 100)
+        eth.append(data[i][2] // 10)
+        ltc.append(data[i][3])
+        dot.append(data[i][4] * 10)
+        ada.append(data[i][5] * 100)
+        doge.append(data[i][6] * 1000)
         time.append(i*3//60)
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "AppleGothic"
