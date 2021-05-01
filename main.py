@@ -141,7 +141,7 @@ async def change_price():
     plt.plot(time, btc, color='darkorange', label="비트코인")
     plt.ylim([min(btc), max(btc)])
     plt.xlabel('시간 (h)')
-    plt.yticks(range(0,6), ('', '', '', '', '', ''))
+    # plt.yticks(range(0,6), ('', '', '', '', '', ''))
     plt.legend(loc=(0.02, 0.92))
     plt.twinx()
     plt.plot(time, eth, color='skyblue', label="이더리움")
