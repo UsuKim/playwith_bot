@@ -1,8 +1,9 @@
-import asyncio,discord,os,random,psycopg2,datetime
+import asyncio,discord,os,random,psycopg2,datetime,matplotlib
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
 from datetime import timedelta
+import matplotlib.pyplot as plt
 
 # https://discord.com/oauth2/authorize?client_id=835763308509396993&scope=bot
 
@@ -115,7 +116,39 @@ async def change_price():
         cur.execute("DELETE FROM graph_data WHERE id = %s",(data[0][0],))
         cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[-1][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
     conn.commit()
+    cur.execute("SELECT * FROM graph_data")
+    data = cur.fetchall()
     conn.close()
+    btc = []
+    eth = []
+    ltc = []
+    dot = []
+    ada = []
+    doge = []
+    time = []
+    for i in range(len(data)):
+        btc.append(data[i][0] // 100)
+        eth.append(data[i][1] // 10)
+        ltc.append(data[i][2])
+        dot.append(data[i][3] * 10)
+        ada.append(data[i][4] * 100)
+        doge.append(data[i][5] * 1000)
+        time.append(i*3//60)
+    matplotlib.rcParams['axes.unicode_minus'] = False
+    matplotlib.rcParams['font.family'] = "AppleGothic"
+    plt.figure()
+    plt.plot(time, btc, color='darkorange', label="비트코인")
+    plt.plot(time, eth, color='skyblue', label="이더리움")
+    plt.plot(time, ltc, color='royalblue', label="라이트코인")
+    plt.plot(time, dot, color='mediumvioletred', label="폴카닷")
+    plt.plot(time, ada, color='mediumblue', label="에이다")
+    plt.plot(time, doge, color='gold', label="도지코인")
+    plt.ylabel('주가 (₩)')
+    plt.xlabel('시간 (h)')
+    plt.grid(True)
+    plt.title('주식 그래프', loc='right')
+    plt.legend(loc='upper left')
+    plt.savefig('graph.png')
 
 # 봇 시작
 @bot.event

@@ -2,7 +2,6 @@ import asyncio,discord,os,random,psycopg2,requests
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
-import matplotlib.pyplot as plt
 
 class cmdCoin(commands.Cog):
     def __init__(self, bot):
@@ -413,6 +412,13 @@ class cmdCoin(commands.Cog):
             else:
                 embed=discord.Embed(title='현재 한강물 온도', description=f'```{temp}℃```', color=0x3a94ce)
         await ctx.send(embed=embed)
+    
+    @commands.command(aliases=["그래프", "graph", "표", "그"])
+    async def cmdGraph(self, ctx):
+        async with ctx.typing():
+            image = discord.File('graph.png')
+        await ctx.send(file=image)
+
 
 def setup(bot):
     bot.add_cog(cmdCoin(bot))
