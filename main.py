@@ -173,6 +173,7 @@ async def change_price():
     leg.remove()
     ax6.add_artist(leg)
     plt.savefig('graph.png')
+    plt.close('all')
 
 # 봇 시작
 @bot.event
