@@ -430,7 +430,7 @@ class cmdCoin(commands.Cog):
             des = ''
             for i in range(0,len(data)):
                 user = await self.bot.fetch_user(data[i][0])
-                des += f'{i+1}. {user} | {format(data[i][1],',')} ₩\n'
+                des += f'{i+1}. {user} | {format(data[i][1],",")} ₩\n'
             embed=discord.Embed(title='자산 순위',description=des,color=0x3a94ce)
             conn.close()
         await ctx.send(embed=embed)
