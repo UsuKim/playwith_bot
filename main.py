@@ -114,11 +114,11 @@ async def change_price():
     if len(data) < 100:
         cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[0][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
     elif data[0][0] >= 100:
+        cur.execute("DELETE FROM graph_data WHERE id = %s",(data[-1][0],))
         cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
-        cur.execute("DELETE FROM graph_data WHERE id = %s",(data[-1][0],))
     else:
-        cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[0][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
         cur.execute("DELETE FROM graph_data WHERE id = %s",(data[-1][0],))
+        cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[0][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
     conn.commit()
     cur.execute("SELECT * FROM graph_data")
     data = cur.fetchall()
