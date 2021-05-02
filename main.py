@@ -135,7 +135,7 @@ async def change_price():
         dot.append(data[i][4])
         ada.append(data[i][5])
         doge.append(data[i][6])
-        time.append(i*3/60)
+        time.append(i*3/60*-1)
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "NanumGothicCoding"
     matplotlib.rcParams['figure.figsize'] = (7, 4)
