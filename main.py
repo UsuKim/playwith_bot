@@ -111,16 +111,14 @@ async def change_price():
     cur = conn.cursor()
     cur.execute("SELECT * FROM graph_data")
     data = cur.fetchall()
-    if len(data) < 100:
-        cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[0][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
-    elif data[-1][0] >= 100:
-        cur.execute("DELETE FROM graph_data WHERE id = %s",(data[-1][0],))
-        cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
-    else:
-        cur.execute("DELETE FROM graph_data WHERE id = %s",(data[-1][0],))
-        cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(data[0][0]+1, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
+    today = datetime.datetime.today()
+    time = f'{today.year}-{today.month}-{today.day} {today.hour}:{today.minute}:{today.second}'
+    cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
+    if len(data) > 100:
+        cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1")
+
     conn.commit()
-    cur.execute("SELECT * FROM graph_data")
+    cur.execute("SELECT * FROM graph_data ORDER BY date asc")
     data = cur.fetchall()
     conn.close()
     btc = []
@@ -138,6 +136,7 @@ async def change_price():
         ada.append(data[i][5])
         doge.append(data[i][6])
         time.append(i*3/60*-1)
+    time.reverse()
     matplotlib.rcParams['axes.unicode_minus'] = False
     matplotlib.rcParams['font.family'] = "NanumGothicCoding"
     matplotlib.rcParams['figure.figsize'] = (7, 4)
