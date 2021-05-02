@@ -419,7 +419,7 @@ class cmdCoin(commands.Cog):
             image = discord.File('graph.png')
         await ctx.send(file=image)
     
-    @commands.command(aliases=["랭킹", "순위", "ranking", "rank"])
+    @commands.command(aliases=["랭킹", "순위", "랭크", "ranking", "rank"])
     async def cmdRank(self, ctx):
         async with ctx.typing():
             DATABASE_URL = os.environ['DATABASE_URL']
