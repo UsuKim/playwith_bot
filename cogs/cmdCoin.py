@@ -425,12 +425,17 @@ class cmdCoin(commands.Cog):
             DATABASE_URL = os.environ['DATABASE_URL']
             conn = psycopg2.connect(DATABASE_URL, sslmode='require')
             cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data ORDER BY money asc LIMIT 10")
+            cur.execute("SELECT * FROM user_data")
             data = cur.fetchall()
             des = '```'
+            m_data = []
             for i in range(0,len(data)):
                 user = await self.bot.fetch_user(data[i][0])
-                des += f'{i+1}. {user} | {format(data[i][1],",")} ₩\n'
+                all_money = data[i][1] + (self.bot.n_btc * data[i][2]) + (self.bot.n_eth * data[i][3]) + (self.bot.n_ltc * data[i][4]) + (self.bot.n_dot * data[i][5]) + (self.bot.n_ada * data[i][6]) + (self.bot.n_doge * data[i][7])
+                m_data += [user, all_money]
+            m_data.sort(key=lambda x:-x[0])
+            for j in range(0,len(m_data)):
+                des += f'{j+1}. {m_data[j][0]} | {format(m_data[j][1],",")} ₩\n'
             des += '```'
             embed=discord.Embed(title='자산 순위',description=des,color=0x8be653)
             conn.close()
