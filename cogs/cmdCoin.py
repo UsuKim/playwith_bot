@@ -432,7 +432,7 @@ class cmdCoin(commands.Cog):
             for i in range(0,len(data)):
                 user = await self.bot.fetch_user(data[i][0])
                 all_money = data[i][1] + (self.bot.n_btc * data[i][2]) + (self.bot.n_eth * data[i][3]) + (self.bot.n_ltc * data[i][4]) + (self.bot.n_dot * data[i][5]) + (self.bot.n_ada * data[i][6]) + (self.bot.n_doge * data[i][7])
-                m_data += [str(user), all_money]
+                m_data += (str(user), all_money)
             m_data.sort(key=lambda x:-x[1])
             for j in range(0,len(m_data)):
                 des += f'{j+1}. {m_data[j][0]} | {format(m_data[j][1],",")} ₩\n'
