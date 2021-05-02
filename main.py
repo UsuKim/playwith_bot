@@ -115,7 +115,7 @@ async def change_price():
     time = f'{today.year}-{today.month}-{today.day} {today.hour}:{today.minute}:{today.second}'
     cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
     if len(data) > 100:
-        cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1")
+        cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1)")
 
     conn.commit()
     cur.execute("SELECT * FROM graph_data ORDER BY date asc")
