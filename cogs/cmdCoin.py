@@ -418,7 +418,22 @@ class cmdCoin(commands.Cog):
         async with ctx.typing():
             image = discord.File('graph.png')
         await ctx.send(file=image)
-
+    
+    @commands.command(aliases=["랭킹", "순위", "ranking", "rank"])
+    async def cmdRank(self, ctx):
+        async with ctx.typing():
+            DATABASE_URL = os.environ['DATABASE_URL']
+            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+            cur = conn.cursor()
+            cur.execute("SELECT * FROM user_data ORDER BY money asc LIMIT 10")
+            data = cur.fetchall()
+            des = ''
+            for i in range(0,len(data)):
+                user = await self.bot.fetch_user(data[i][0])
+                des += f'{i+1}. {user} | {format(data[i][1],',')} ₩\n'
+            embed=discord.Embed(title='자산 순위',description=des,color=0x3a94ce)
+            conn.close()
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(cmdCoin(bot))
