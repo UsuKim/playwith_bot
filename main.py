@@ -172,7 +172,6 @@ async def change_price():
     leg = ax1.legend(lns, labs, loc=2, framealpha=0.7)
     leg.remove()
     ax6.add_artist(leg)
-    plt.grid(True)
     plt.savefig('graph.png')
 
 # 봇 시작
