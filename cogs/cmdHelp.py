@@ -6,10 +6,10 @@ class cmdHelp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
     
-    @commands.command(aliases=["도움", "도움말", "help"])
+    @commands.command(aliases=["도움", "도움말", "명령어", "help"])
     async def cmdHelp(self, ctx):
         embed=discord.Embed(title=f"플레이봇에 관한 도움말 입니다.", description=f"**명령어** 및 **사용법** 등에 대한 설명들이 적혀 있습니다.", color=0xffffff)
-        embed.set_author(name="「  PlayBot 도움말  」", icon_url="https://cdn.discordapp.com/avatars/835763308509396993/ea999c4a1977e89642a1d520622e288f.png?size=128")
+        embed.set_author(name="「  PlayBot 도움말  」", icon_url=self.bot.user.avatar_url)
         embed.add_field(name="도움말 열기", value="`ㅍ도움`, `ㅍhelp`")
         embed.add_field(name="코인 가격 목록", value="`ㅍ코인`, `ㅍ가격`, `ㅍcoin`")
         embed.add_field(name="계좌 정보", value="`ㅍ지갑`, `ㅍ돈`, `ㅍwallet`")

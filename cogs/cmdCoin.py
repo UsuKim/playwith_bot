@@ -437,7 +437,7 @@ class cmdCoin(commands.Cog):
             for j in range(0,len(m_data)):
                 des += f'{j+1}. {m_data[j][0]} | {format(m_data[j][1],",")} ₩\n'
             des += '```'
-            embed=discord.Embed(title='자산 순위',description=des,color=0x8be653)
+            embed=discord.Embed(title='자산 순위 TOP 10',description=des,color=0x8be653)
             conn.close()
         await ctx.send(embed=embed)
 
