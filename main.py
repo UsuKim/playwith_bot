@@ -42,6 +42,10 @@ for it in ticker:
         bot.n_dot = int(it['trade_price'])
     if it['market'] == 'KRW-LTC':
         bot.n_ltc = int(it['trade_price'])
+    if it['market'] == 'KRW-XRP':
+            bot.n_xrp = int(it['trade_price'])
+    if it['market'] == 'KRW-TRX':
+        bot.n_trx = int(it['trade_price'])
 
 # cog 설정
 for filename in os.listdir("cogs"):
