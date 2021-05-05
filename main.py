@@ -184,7 +184,7 @@ async def change_price():
     ax6.set_ylim([min(doge)-min(doge)/500, max(doge)+max(doge)/500])
     ax6.tick_params(axis='y', length=0, labelcolor='white')
     ax7 = ax6.twinx()
-    g = ax7.plot(time, xrp, color='black', label="리플")
+    g = ax7.plot(time, xrp, color='dimgrey', label="리플")
     ax7.set_ylim([min(xrp)-min(xrp)/500, max(xrp)+max(xrp)/500])
     ax7.tick_params(axis='y', length=0, labelcolor='white')
     ax8 = ax7.twinx()

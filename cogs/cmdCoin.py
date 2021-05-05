@@ -96,8 +96,8 @@ class cmdCoin(commands.Cog):
             description += f'{pm_dot} 폴카닷　　: {format(self.bot.n_dot,",")} ₩ ({ar_dot} {format(self.bot.r_dot,",")} ₩)\n'
             description += f'{pm_ada} 에이다　　: {format(self.bot.n_ada,",")} ₩ ({ar_ada} {format(self.bot.r_ada,",")} ₩)\n'
             description += f'{pm_doge} 도지코인　: {format(self.bot.n_doge,",")} ₩ ({ar_doge} {format(self.bot.r_doge,",")} ₩)\n'
-            description += f'{pm_xrp} 리플　: {format(self.bot.n_xrp,",")} ₩ ({ar_xrp} {format(self.bot.r_xrp,",")} ₩)\n'
-            description += f'{pm_trx} 트론　: {format(self.bot.n_trx,",")} ₩ ({ar_trx} {format(self.bot.r_trx,",")} ₩)'
+            description += f'{pm_xrp} 리플　　　: {format(self.bot.n_xrp,",")} ₩ ({ar_xrp} {format(self.bot.r_xrp,",")} ₩)\n'
+            description += f'{pm_trx} 트론　　　: {format(self.bot.n_trx,",")} ₩ ({ar_trx} {format(self.bot.r_trx,",")} ₩)'
             description += '```'
         embed=discord.Embed(title=f"현재 시세", description=description, color=0x8be653)
         embed.set_footer(text=f'다음 변동까지 {self.bot.time}초')
@@ -452,7 +452,7 @@ class cmdCoin(commands.Cog):
                 e_doge = format(int(self.bot.n_doge * data[7] - data[13]),',')
                 e_xrp = format(int(self.bot.n_xrp * data[15] - data[17]),',')
                 e_trx = format(int(self.bot.n_trx * data[16] - data[18]),',')
-                embed=discord.Embed(title="계좌 정보", description=f"```bash\n총자산: {format(all_money,',')} ₩\n잔액　: {format(data[1],',')} ₩\n\n비트코인　: {data[2]} # 손익 : {e_btc} ₩\n이더리움　: {data[3]} # 손익 : {e_eth} ₩\n라이트코인: {data[4]} # 손익 : {e_ltc} ₩\n폴카닷　　: {data[5]} # 손익 : {e_dot} ₩\n에이다　　: {data[6]} # 손익 : {e_ada} ₩\n도지코인　: {data[7]} # 손익 : {e_doge} ₩\n리플　: {data[15]} # 손익 : {e_xrp} ₩\n트론　: {data[16]} # 손익 : {e_trx} ₩```", color=0x8be653)
+                embed=discord.Embed(title="계좌 정보", description=f"```bash\n총자산: {format(all_money,',')} ₩\n잔액　: {format(data[1],',')} ₩\n\n비트코인　: {data[2]} # 손익 : {e_btc} ₩\n이더리움　: {data[3]} # 손익 : {e_eth} ₩\n라이트코인: {data[4]} # 손익 : {e_ltc} ₩\n폴카닷　　: {data[5]} # 손익 : {e_dot} ₩\n에이다　　: {data[6]} # 손익 : {e_ada} ₩\n도지코인　: {data[7]} # 손익 : {e_doge} ₩\n리플　　　: {data[15]} # 손익 : {e_xrp} ₩\n트론　　　: {data[16]} # 손익 : {e_trx} ₩```", color=0x8be653)
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
