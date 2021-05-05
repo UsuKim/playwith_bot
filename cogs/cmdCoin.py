@@ -69,13 +69,35 @@ class cmdCoin(commands.Cog):
             else:
                 ar_doge = '■'
                 pm_doge = '='
+            
+            if self.bot.r_xrp < 0:
+                ar_xrp = '▼'
+                pm_xrp = '-'
+            elif self.bot.r_xrp > 0:
+                ar_xrp = '▲'
+                pm_xrp = '+'
+            else:
+                ar_xrp = '■'
+                pm_xrp = '='
+            
+            if self.bot.r_trx < 0:
+                ar_trx = '▼'
+                pm_trx = '-'
+            elif self.bot.r_trx > 0:
+                ar_trx = '▲'
+                pm_trx = '+'
+            else:
+                ar_trx = '■'
+                pm_trx = '='
             description = '```diff\n'
             description += f'{pm_btc} 비트코인　: {format(self.bot.n_btc,",")} ₩ ({ar_btc} {format(self.bot.r_btc,",")} ₩)\n'
             description += f'{pm_eth} 이더리움　: {format(self.bot.n_eth,",")} ₩ ({ar_eth} {format(self.bot.r_eth,",")} ₩)\n'
             description += f'{pm_ltc} 라이트코인: {format(self.bot.n_ltc,",")} ₩ ({ar_ltc} {format(self.bot.r_ltc,",")} ₩)\n'
             description += f'{pm_dot} 폴카닷　　: {format(self.bot.n_dot,",")} ₩ ({ar_dot} {format(self.bot.r_dot,",")} ₩)\n'
             description += f'{pm_ada} 에이다　　: {format(self.bot.n_ada,",")} ₩ ({ar_ada} {format(self.bot.r_ada,",")} ₩)\n'
-            description += f'{pm_doge} 도지코인　: {format(self.bot.n_doge,",")} ₩ ({ar_doge} {format(self.bot.r_doge,",")} ₩)'
+            description += f'{pm_doge} 도지코인　: {format(self.bot.n_doge,",")} ₩ ({ar_doge} {format(self.bot.r_doge,",")} ₩)\n'
+            description += f'{pm_xrp} 리플　: {format(self.bot.n_xrp,",")} ₩ ({ar_xrp} {format(self.bot.r_xrp,",")} ₩)\n'
+            description += f'{pm_trx} 트론　: {format(self.bot.n_trx,",")} ₩ ({ar_trx} {format(self.bot.r_trx,",")} ₩)'
             description += '```'
         embed=discord.Embed(title=f"현재 시세", description=description, color=0x8be653)
         embed.set_footer(text=f'다음 변동까지 {self.bot.time}초')
@@ -85,7 +107,7 @@ class cmdCoin(commands.Cog):
     async def cmdBuy(self, ctx, *args):
         try:
             _id = args[0]
-            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all':
+            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all' or args[1] == '올':
                 _all = True
                 amount = 1
             else:
@@ -104,7 +126,7 @@ class cmdCoin(commands.Cog):
                 cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
                 data = cur.fetchone()
                 if data == None:
-                    cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
+                    cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)",(str(ctx.author.id),))
                     embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
                 elif len(args) != 2:
                     embed=discord.Embed(title="인수의 개수가 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
@@ -206,6 +228,38 @@ class cmdCoin(commands.Cog):
                             bought = data[13] + (self.bot.n_doge * amount)
                             cur.execute("UPDATE user_data SET b_doge = %s WHERE id = %s",(bought, str(ctx.author.id)))
                             embed=discord.Embed(title='구매 완료',description=f'```구매 수량: {amount}개\n보유 화폐: {coin}개\n구매 금액: {format(self.bot.n_doge * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                    
+                    elif _id == '리플' or _id == 'xrp' or _id == '리':
+                        if _all == True:
+                            amount = data[1] // self.bot.n_xrp
+                        if self.bot.n_xrp * amount > data[1]:
+                            embed=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(self.bot.n_xrp * amount,",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
+                        elif amount == 0:
+                            embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
+                        else:
+                            coin = data[15] + amount
+                            cur.execute("UPDATE user_data SET xrp = %s WHERE id = %s",(coin, str(ctx.author.id)))
+                            money = data[1] - (self.bot.n_xrp * amount)
+                            cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                            bought = data[17] + (self.bot.n_xrp * amount)
+                            cur.execute("UPDATE user_data SET b_xrp = %s WHERE id = %s",(bought, str(ctx.author.id)))
+                            embed=discord.Embed(title='구매 완료',description=f'```구매 수량: {amount}개\n보유 화폐: {coin}개\n구매 금액: {format(self.bot.n_xrp * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                    
+                    elif _id == '트론' or _id == 'trx' or _id == '트':
+                        if _all == True:
+                            amount = data[1] // self.bot.n_trx
+                        if self.bot.n_trx * amount > data[1]:
+                            embed=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(self.bot.n_trx * amount,",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
+                        elif amount == 0:
+                            embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
+                        else:
+                            coin = data[16] + amount
+                            cur.execute("UPDATE user_data SET trx = %s WHERE id = %s",(coin, str(ctx.author.id)))
+                            money = data[1] - (self.bot.n_trx * amount)
+                            cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                            bought = data[18] + (self.bot.n_trx * amount)
+                            cur.execute("UPDATE user_data SET b_trx = %s WHERE id = %s",(bought, str(ctx.author.id)))
+                            embed=discord.Embed(title='구매 완료',description=f'```구매 수량: {amount}개\n보유 화폐: {coin}개\n구매 금액: {format(self.bot.n_trx * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
 
                     else:
                         embed=discord.Embed(title='이름을 정확히 적어주세요.',description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
@@ -217,7 +271,7 @@ class cmdCoin(commands.Cog):
     async def cmdSell(self, ctx, *args):
         try:
             _id = args[0]
-            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all':
+            if args[1] == '모두' or args[1] == '전부' or args[1] == 'all' or args[1] == '올':
                 _all = True
                 amount = 1
             else:
@@ -236,7 +290,7 @@ class cmdCoin(commands.Cog):
                 cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
                 data = cur.fetchone()
                 if data == None:
-                    cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
+                    cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)",(str(ctx.author.id),))
                     embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
                 elif len(args) != 2:
                     embed=discord.Embed(title="인수의 개수가 올바르지 않습니다.",description='예)\n```ㅍ구매 비트코인 1```',color=0xb40000)
@@ -338,6 +392,38 @@ class cmdCoin(commands.Cog):
                             bought = data[13] - ((self.bot.n_doge * amount) - ((amount / data[7]) * (data[7] * self.bot.n_doge - data[13])))
                             cur.execute("UPDATE user_data SET b_doge = %s WHERE id = %s",(bought, str(ctx.author.id)))
                             embed=discord.Embed(title='판매 완료',description=f'```판매 수량: {amount}개\n보유 화폐: {coin}개\n판매 금액: {format(self.bot.n_doge * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                    
+                    elif _id == '리플' or _id == 'xrp' or _id == '리':
+                        if _all == True:
+                            amount = data[15]
+                        if amount > data[15]:
+                            embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[15]} 개```',color=0xb40000)
+                        elif amount == 0:
+                            embed=discord.Embed(title="판매 수량이 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
+                        else:
+                            coin = data[15] - amount
+                            cur.execute("UPDATE user_data SET xrp = %s WHERE id = %s",(coin, str(ctx.author.id)))
+                            money = data[1] + (self.bot.n_xrp * amount)
+                            cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                            bought = data[17] - ((self.bot.n_xrp * amount) - ((amount / data[15]) * (data[15] * self.bot.n_xrp - data[17])))
+                            cur.execute("UPDATE user_data SET b_xrp = %s WHERE id = %s",(bought, str(ctx.author.id)))
+                            embed=discord.Embed(title='판매 완료',description=f'```판매 수량: {amount}개\n보유 화폐: {coin}개\n판매 금액: {format(self.bot.n_xrp * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                    
+                    elif _id == '트론' or _id == 'trx' or _id == '트':
+                        if _all == True:
+                            amount = data[16]
+                        if amount > data[16]:
+                            embed=discord.Embed(title='보유 화폐가 부족합니다.',description=f'```판매 수량: {amount} 개\n보유 화폐: {data[16]} 개```',color=0xb40000)
+                        elif amount == 0:
+                            embed=discord.Embed(title="판매 수량이 올바르지 않습니다.",description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
+                        else:
+                            coin = data[16] - amount
+                            cur.execute("UPDATE user_data SET trx = %s WHERE id = %s",(coin, str(ctx.author.id)))
+                            money = data[1] + (self.bot.n_trx * amount)
+                            cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                            bought = data[18] - ((self.bot.n_trx * amount) - ((amount / data[16]) * (data[16] * self.bot.n_trx - data[18])))
+                            cur.execute("UPDATE user_data SET b_trx = %s WHERE id = %s",(bought, str(ctx.author.id)))
+                            embed=discord.Embed(title='판매 완료',description=f'```판매 수량: {amount}개\n보유 화폐: {coin}개\n판매 금액: {format(self.bot.n_trx * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
 
                     else:
                         embed=discord.Embed(title='이름을 정확히 적어주세요.',description='예)\n```ㅍ판매 비트코인 1```',color=0xb40000)
@@ -354,17 +440,19 @@ class cmdCoin(commands.Cog):
             cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
             data = cur.fetchone()
             if data == None:
-                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
+                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)",(str(ctx.author.id),))
                 embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
             else:
-                all_money = data[1] + (self.bot.n_btc * data[2]) + (self.bot.n_eth * data[3]) + (self.bot.n_ltc * data[4]) + (self.bot.n_dot * data[5]) + (self.bot.n_ada * data[6]) + (self.bot.n_doge * data[7])
+                all_money = data[1] + (self.bot.n_btc * data[2]) + (self.bot.n_eth * data[3]) + (self.bot.n_ltc * data[4]) + (self.bot.n_dot * data[5]) + (self.bot.n_ada * data[6]) + (self.bot.n_doge * data[7]) + (self.bot.n_xrp * data[15]) + (self.bot.n_trx * data[16])
                 e_btc = format(int(self.bot.n_btc * data[2] - data[8]),',')
                 e_eth = format(int(self.bot.n_eth * data[3] - data[9]),',')
                 e_ltc = format(int(self.bot.n_ltc * data[4] - data[10]),',')
                 e_dot = format(int(self.bot.n_dot * data[5] - data[11]),',')
                 e_ada = format(int(self.bot.n_ada * data[6] - data[12]),',')
                 e_doge = format(int(self.bot.n_doge * data[7] - data[13]),',')
-                embed=discord.Embed(title="계좌 정보", description=f"```bash\n총자산: {format(all_money,',')} ₩\n잔액　: {format(data[1],',')} ₩\n\n비트코인　: {data[2]} # 손익 : {e_btc} ₩\n이더리움　: {data[3]} # 손익 : {e_eth} ₩\n라이트코인: {data[4]} # 손익 : {e_ltc} ₩\n폴카닷　　: {data[5]} # 손익 : {e_dot} ₩\n에이다　　: {data[6]} # 손익 : {e_ada} ₩\n도지코인　: {data[7]} # 손익 : {e_doge} ₩```", color=0x8be653)
+                e_xrp = format(int(self.bot.n_xrp * data[15] - data[17]),',')
+                e_trx = format(int(self.bot.n_trx * data[16] - data[18]),',')
+                embed=discord.Embed(title="계좌 정보", description=f"```bash\n총자산: {format(all_money,',')} ₩\n잔액　: {format(data[1],',')} ₩\n\n비트코인　: {data[2]} # 손익 : {e_btc} ₩\n이더리움　: {data[3]} # 손익 : {e_eth} ₩\n라이트코인: {data[4]} # 손익 : {e_ltc} ₩\n폴카닷　　: {data[5]} # 손익 : {e_dot} ₩\n에이다　　: {data[6]} # 손익 : {e_ada} ₩\n도지코인　: {data[7]} # 손익 : {e_doge} ₩\n리플　: {data[15]} # 손익 : {e_xrp} ₩\n트론　: {data[16]} # 손익 : {e_trx} ₩```", color=0x8be653)
             conn.commit()
             conn.close()
         await ctx.send(embed=embed)
@@ -378,7 +466,7 @@ class cmdCoin(commands.Cog):
             cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
             data = cur.fetchone()
             if data == None:
-                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)",(str(ctx.author.id),))
+                cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)",(str(ctx.author.id),))
                 embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
             else:
                 if data[14] == 1:
@@ -431,7 +519,7 @@ class cmdCoin(commands.Cog):
             m_data = []
             for i in range(0,len(data)):
                 user = await self.bot.fetch_user(data[i][0])
-                all_money = data[i][1] + (self.bot.n_btc * data[i][2]) + (self.bot.n_eth * data[i][3]) + (self.bot.n_ltc * data[i][4]) + (self.bot.n_dot * data[i][5]) + (self.bot.n_ada * data[i][6]) + (self.bot.n_doge * data[i][7])
+                all_money = data[i][1] + (self.bot.n_btc * data[i][2]) + (self.bot.n_eth * data[i][3]) + (self.bot.n_ltc * data[i][4]) + (self.bot.n_dot * data[i][5]) + (self.bot.n_ada * data[i][6]) + (self.bot.n_doge * data[i][7]) + (self.bot.n_xrp * data[i][15]) + (self.bot.n_trx * data[i][16])
                 m_data.append((str(user), all_money))
             m_data.sort(key=lambda x:x[1], reverse=True)
             for j in range(0,len(m_data)):

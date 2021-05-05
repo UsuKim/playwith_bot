@@ -76,10 +76,12 @@ async def change_time():
         conn.commit()
         conn.close()
 
+# btc eth ltc dot ada doge xrp trx
+
 # 가격 불러오기
 @tasks.loop(seconds=180)
 async def change_price():
-    bot.btc, bot.eth, bot.doge, bot.ada, bot.dot, bot.ltc = bot.n_btc, bot.n_eth, bot.n_doge, bot.n_ada, bot.n_dot, bot.n_ltc
+    bot.btc, bot.eth, bot.doge, bot.ada, bot.dot, bot.ltc, bot.xrp, bot.trx = bot.n_btc, bot.n_eth, bot.n_doge, bot.n_ada, bot.n_dot, bot.n_ltc, bot.n_xrp, bot.n_trx
     markets = upbit.get_market_all()
     krw_markets = []
     for market in markets:
@@ -99,12 +101,18 @@ async def change_price():
             bot.n_dot = int(it['trade_price'])
         if it['market'] == 'KRW-LTC':
             bot.n_ltc = int(it['trade_price'])
+        if it['market'] == 'KRW-XRP':
+            bot.n_xrp = int(it['trade_price'])
+        if it['market'] == 'KRW-TRX':
+            bot.n_trx = int(it['trade_price'])
     bot.r_btc = bot.n_btc - bot.btc
     bot.r_eth = bot.n_eth - bot.eth
     bot.r_doge = bot.n_doge - bot.doge
     bot.r_ada = bot.n_ada - bot.ada
     bot.r_dot = bot.n_dot - bot.dot
     bot.r_ltc = bot.n_ltc - bot.ltc
+    bot.r_xrp = bot.n_xrp - bot.xrp
+    bot.r_trx = bot.n_trx - bot.trx
     bot.time = 180
     DATABASE_URL = os.environ['DATABASE_URL']
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -113,8 +121,8 @@ async def change_price():
     data = cur.fetchall()
     today = datetime.datetime.today()
     time = f'{today.year}-{today.month}-{today.day} {today.hour}:{today.minute}:{today.second}'
-    cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge))
-    if len(data) > 100:
+    cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge, bot.n_xrp, bot.n_trx))
+    if len(data) > 200:
         cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1)")
 
     conn.commit()
@@ -127,6 +135,8 @@ async def change_price():
     dot = []
     ada = []
     doge = []
+    xrp = []
+    trx = []
     time = []
     for i in range(len(data)):
         btc.append(data[i][1])
@@ -135,6 +145,8 @@ async def change_price():
         dot.append(data[i][4])
         ada.append(data[i][5])
         doge.append(data[i][6])
+        xrp.append(data[i][7])
+        trx.append(data[i][8])
         time.append(i*3/60*-1)
     time.reverse()
     matplotlib.rcParams['axes.unicode_minus'] = False
@@ -167,11 +179,19 @@ async def change_price():
     f = ax6.plot(time, doge, color='gold', label="도지코인")
     ax6.set_ylim([min(doge)-min(doge)/500, max(doge)+max(doge)/500])
     ax6.tick_params(axis='y', length=0, labelcolor='white')
-    lns = a+b+c+d+e+f
+    ax7 = ax6.twinx()
+    g = ax7.plot(time, xrp, color='black', label="리플")
+    ax7.set_ylim([min(xrp)-min(xrp)/500, max(xrp)+max(xrp)/500])
+    ax7.tick_params(axis='y', length=0, labelcolor='white')
+    ax8 = ax7.twinx()
+    h = ax8.plot(time, trx, color='red', label="트론")
+    ax8.set_ylim([min(trx)-min(trx)/500, max(trx)+max(trx)/500])
+    ax8.tick_params(axis='y', length=0, labelcolor='white')
+    lns = a+b+c+d+e+f+g+h
     labs = [l.get_label() for l in lns]
     leg = ax1.legend(lns, labs, loc=2, framealpha=0.7)
     leg.remove()
-    ax6.add_artist(leg)
+    ax8.add_artist(leg)
     plt.savefig('graph.png')
     fig.clf()
     plt.close()
