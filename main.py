@@ -22,7 +22,7 @@ bot = commands.Bot(command_prefix='ㅍ',status=discord.Status.online,activity=ga
 bot.remove_command("help") #help 명령어 지우기
 playing = cycle(["ㅍ도움", "ㅍ도움말", "ㅍhelp"])
 bot.time = 0
-bot.btc, bot.eth, bot.doge, bot.ada, bot.dot, bot.ltc = 0,0,0,0,0,0
+bot.btc, bot.eth, bot.doge, bot.ada, bot.dot, bot.ltc, bot.xrp, bot.trx = 0,0,0,0,0,0,0,0
 markets = upbit.get_market_all()
 krw_markets = []
 for market in markets:
