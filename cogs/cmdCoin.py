@@ -2,6 +2,7 @@ import asyncio,discord,os,random,psycopg2,requests
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
 from itertools import cycle
+from discord_slash import cog_ext, SlashContext
 
 class cmdCoin(commands.Cog):
     def __init__(self, bot):
@@ -508,6 +509,11 @@ class cmdCoin(commands.Cog):
             des += '```'
             embed=discord.Embed(title='자산 순위 TOP 10',description=des,color=0x8be653)
         await ctx.send(embed=embed)
+    
+    @cog_ext.cog_slash(name="test")
+    async def _test(self, ctx: SlashContext):
+        embed = discord.Embed(title="embed test")
+        await ctx.send(content="test", embeds=[embed])
 
 def setup(bot):
     bot.add_cog(cmdCoin(bot))

@@ -1,6 +1,7 @@
 import asyncio,discord,os,random,psycopg2,datetime,matplotlib
 from upbitpy import Upbitpy
 from discord.ext import commands, tasks
+from discord_slash import SlashCommand
 from itertools import cycle
 from datetime import timedelta
 import matplotlib.pyplot as plt
@@ -19,6 +20,7 @@ token = t.read().split()[0]
 # 봇 설정
 game = discord.Game("ㅍ도움")
 bot = commands.Bot(command_prefix='ㅍ',status=discord.Status.online,activity=game)
+slash = SlashCommand(bot, override_type = True)
 bot.remove_command("help") #help 명령어 지우기
 playing = cycle(["ㅍ도움", "ㅍ도움말", "ㅍhelp"])
 bot.time = 0
