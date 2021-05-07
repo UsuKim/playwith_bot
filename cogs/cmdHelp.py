@@ -16,6 +16,7 @@ class cmdHelp(commands.Cog):
         embed.add_field(name="그래프 보기", value="`ㅍ그래프`, `ㅍ그`, `ㅍgraph`")
         embed.add_field(name="코인 구매", value="`ㅍ구매 [이름] [개수]`, (`ㅍ매수`, `ㅍbuy`)")
         embed.add_field(name="코인 판매", value="`ㅍ판매 [이름] [개수]`, (`ㅍ매도`, `ㅍsell`)")
+        embed.add_field(name="슬롯머신", value="`ㅍ슬롯머신`, `ㅍ슬롯`, `ㅍslot`")
         embed.add_field(name="일일 보상", value="`ㅍ돈받기`, `ㅍ일일보상`, `ㅍdaily`")
         embed.add_field(name="랭킹 확인", value="`ㅍ랭킹`, `ㅍ순위`, `ㅍrank`")
         embed.add_field(name="한강 온도", value="`ㅍ한강`, `ㅍ한강물`")
