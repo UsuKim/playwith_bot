@@ -196,7 +196,7 @@ async def change_price():
     leg = ax1.legend(lns, labs, loc=2, framealpha=0.7)
     leg.remove()
     ax8.add_artist(leg)
-    plt.text(0.0, 0.0, f'다음 변동까지 {bot.time}초')
+    ax8.text(-10.0, max(trx)+max(trx)/500, f'다음 변동까지 {bot.time}초')
     plt.savefig('graph.png')
     fig.clf()
     plt.close()
