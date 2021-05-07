@@ -196,7 +196,7 @@ async def change_price():
     leg = ax1.legend(lns, labs, loc=2, framealpha=0.7)
     leg.remove()
     ax8.add_artist(leg)
-    ax8.set_ylabel(f'{data[-1][0]}')
+    ax1.set_ylabel(f'{data[-1][0]}')
     plt.savefig('graph.png')
     fig.clf()
     plt.close()
