@@ -125,9 +125,8 @@ class cmdSlot(commands.Cog):
                 else:
                     money = data[1] - bat
                 cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
-                await message.edit(content=f"{slot1}{slot2}{slot3}")
                 embed=discord.Embed(title='슬롯머신 결과',description=f'```손익: {format(money-data[1],",")} ₩\n잔액: {format(money,",")} ₩```',color=0x8be653)
-                await ctx.send(embed=embed)
+                await message.edit(content=f"{slot1}{slot2}{slot3}",embed=embed)
             conn.commit()
             conn.close()
 
