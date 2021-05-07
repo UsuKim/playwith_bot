@@ -133,7 +133,8 @@ class cmdSlot(commands.Cog):
                 self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
                 self.bot.cur.execute("UPDATE user_data SET wait = 0 WHERE id = %s",(str(ctx.author.id),))
                 self.bot.conn.commit()
-                embed=discord.Embed(title='슬롯머신 결과',description=f'```손익: {format(money-data[1],",")} ₩\n잔액: {format(money,",")} ₩```',color=0x8be653)
+                user = await self.bot.fetch_user(ctx.author.id)
+                embed=discord.Embed(title='슬롯머신 결과',description=f'{user}\n```손익: {format(money-data[1],",")} ₩\n잔액: {format(money,",")} ₩```',color=0x8be653)
                 try:
                     await message.edit(content=f"{slot1}{slot2}{slot3}",embed=embed)
                 except:
