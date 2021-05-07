@@ -77,13 +77,9 @@ async def change_time():
     if bot.m == 0:
         bot.m = ''
     if t.seconds == 0:
-        DATABASE_URL = os.environ['DATABASE_URL']
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM user_data")
-        cur.execute("UPDATE user_data SET daily = %s",(1,))
-        conn.commit()
-        conn.close()
+        bot.cur.execute("SELECT * FROM user_data")
+        bot.cur.execute("UPDATE user_data SET daily = %s",(1,))
+        bot.conn.commit()
 
 # btc eth ltc dot ada doge xrp trx
 
@@ -123,21 +119,17 @@ async def change_price():
     bot.r_xrp = bot.n_xrp - bot.xrp
     bot.r_trx = bot.n_trx - bot.trx
     bot.time = 180
-    DATABASE_URL = os.environ['DATABASE_URL']
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM graph_data")
-    data = cur.fetchall()
+    bot.cur.execute("SELECT * FROM graph_data")
+    data = bot.cur.fetchall()
     today = datetime.datetime.today()
     time = f'{today.year}-{today.month}-{today.day} {today.hour}:{today.minute}:{today.second}'
-    cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge, bot.n_xrp, bot.n_trx))
+    bot.cur.execute("INSERT INTO graph_data VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",(time, bot.n_btc, bot.n_eth, bot.n_ltc, bot.n_dot, bot.n_ada, bot.n_doge, bot.n_xrp, bot.n_trx))
     if len(data) > 200:
-        cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1)")
+        bot.cur.execute("DELETE FROM graph_data WHERE date IN (SELECT date FROM graph_data ORDER BY date asc LIMIT 1)")
 
-    conn.commit()
-    cur.execute("SELECT * FROM graph_data ORDER BY date asc")
-    data = cur.fetchall()
-    conn.close()
+    bot.conn.commit()
+    bot.cur.execute("SELECT * FROM graph_data ORDER BY date asc")
+    data = bot.cur.fetchall()
     btc = []
     eth = []
     ltc = []

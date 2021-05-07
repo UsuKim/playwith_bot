@@ -14,12 +14,13 @@ class cmdSlot(commands.Cog):
             embed=discord.Embed(title="금액이 올바르지 않습니다.",description='예)\n```ㅍ슬롯 1000```',color=0xb40000)
             await ctx.send(embed=embed)
         else:
-            DATABASE_URL = os.environ['DATABASE_URL']
-            conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-            cur = conn.cursor()
-            cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
-            data = cur.fetchone()
-            if bat < 500:
+            self.bot.cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
+            data = self.bot.cur.fetchone()
+            if data == None:
+                self.bot.cur.execute("INSERT INTO user_data VALUES (%s, 100000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0)",(str(ctx.author.id),))
+                embed=discord.Embed(title="계좌가 없으시군요! 지금 만들어 드리겠습니다.", description='```계좌 생성 보너스: 100,000 ₩```', color=0x8be653)
+                await ctx.send(embed=embed)
+            elif bat < 500:
                 embed=discord.Embed(title="금액이 너무 작습니다.",description='```최소 금액 : 500 ₩```',color=0xb40000)
                 await ctx.send(embed=embed)
             elif bat > data[1]:
@@ -30,8 +31,8 @@ class cmdSlot(commands.Cog):
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(f'**{format(bat, ",")} ₩** 을 걸었습니다!')
-                cur.execute("UPDATE user_data SET wait = 1 WHERE id = %s",(str(ctx.author.id),))
-                conn.commit()
+                self.bot.cur.execute("UPDATE user_data SET wait = 1 WHERE id = %s",(str(ctx.author.id),))
+                self.bot.conn.commit()
                 message = await ctx.send('<a:slot_ing:840071330803351554> <a:slot_ing:840071330803351554> <a:slot_ing:840071330803351554>')
                 await asyncio.sleep(3)
                 slots = {'play':0.03,'dia':0.05,'star':0.08,'bell':0.12,'clov':0.17,'lemon':0.23,'cher':0.32}
@@ -129,13 +130,12 @@ class cmdSlot(commands.Cog):
                         money = data[1] - bat
                 else:
                     money = data[1] - bat
-                cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
                 embed=discord.Embed(title='슬롯머신 결과',description=f'```손익: {format(money-data[1],",")} ₩\n잔액: {format(money,",")} ₩```',color=0x8be653)
                 await message.edit(content=f"{slot1}{slot2}{slot3}",embed=embed)
-                cur.execute("UPDATE user_data SET wait = 0 WHERE id = %s",(str(ctx.author.id),))
-                conn.commit()
-            conn.commit()
-            conn.close()
+                self.bot.cur.execute("UPDATE user_data SET wait = 0 WHERE id = %s",(str(ctx.author.id),))
+                self.bot.conn.commit()
+            self.bot.conn.commit()
 
 def setup(bot):
     bot.add_cog(cmdSlot(bot))
