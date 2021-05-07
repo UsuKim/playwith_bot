@@ -1,4 +1,4 @@
-a = 0.5
-
-if 1 <= a < 2:
-    print('우흥')
+a = 'play'
+b = 'clov'
+c = 'clov'
+print([a,b,c])

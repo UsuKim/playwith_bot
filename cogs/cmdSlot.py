@@ -19,13 +19,17 @@ class cmdSlot(commands.Cog):
             cur = conn.cursor()
             cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
             data = cur.fetchone()
-            if bat < 500 or bat > data[1]:
-                embed=discord.Embed(title="금액이 올바르지 않습니다.",description='예)\n```ㅍ슬롯 1000```',color=0xb40000)
+            if bat < 500:
+                embed=discord.Embed(title="금액이 너무 작습니다.",description='```최소 금액 : 500 ₩```',color=0xb40000)
+                await ctx.send(embed=embed)
+            elif bat > data[1]:
+                embed=discord.Embed(title="금액이 너무 큽니다.",description=f'```잔여 금액 : {format(data[1], ",")} ₩```',color=0xb40000)
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(f'**{format(bat, ",")} ₩** 을 걸었습니다!')
                 message = await ctx.send('<a:slot_ing:840071330803351554> <a:slot_ing:840071330803351554> <a:slot_ing:840071330803351554>')
                 await asyncio.sleep(3)
+                slots = {'play':0.03,'dia':0.05,'star':0.08,'bell':0.12,'clov':0.17,'lemon':0.23,'cher':0.32}
                 slot1_r = random.random()*100
                 if 0.0 <= slot1_r < 3.0:
                     slot1_r = 'play'
@@ -94,7 +98,33 @@ class cmdSlot(commands.Cog):
                 elif 68.0 <= slot3_r < 100.0:
                     slot3_r = 'cher'
                     slot3 = self.bot.get_emoji(840051236371038208)
+                
+                if slot1_r == slot2_r == slot3_r:
+                    money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r])*bat))
+                elif [slot1_r,slot2_r,slot3_r].count('play') == 1:
+                    l = [slot1_r,slot2_r,slot3_r].remove('play')
+                    if l[0] == l[1]:
+                        money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
+                    else:
+                        money = data[1] - bat
+                elif [slot1_r,slot2_r,slot3_r].count('dia') == 1:
+                    l = [slot1_r,slot2_r,slot3_r].remove('dia')
+                    if l[0] == l[1]:
+                        money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
+                    else:
+                        money = data[1] - bat
+                elif [slot1_r,slot2_r,slot3_r].count('star') == 1:
+                    l = [slot1_r,slot2_r,slot3_r].remove('star')
+                    if l[0] == l[1]:
+                        money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
+                    else:
+                        money = data[1] - bat
+                else:
+                    money = data[1] - bat
+                cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
                 await message.edit(content=f"{slot1}{slot2}{slot3}")
+                embed=discord.Embed(title='슬롯머신 결과',description=f'```손익: {format(money-data[1],",")} ₩\n잔액: {money} ₩```')
+                await ctx.send(embed=embed)
             conn.commit()
             conn.close()
 
