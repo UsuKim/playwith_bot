@@ -51,6 +51,7 @@ for it in ticker:
 DATABASE_URL = os.environ['DATABASE_URL']
 bot.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 bot.cur = bot.conn.cursor()
+bot.cur.execute("UPDATE user_data SET wait = 0")
 
 # cog 설정
 for filename in os.listdir("cogs"):
