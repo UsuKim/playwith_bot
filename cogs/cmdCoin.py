@@ -7,7 +7,7 @@ class cmdCoin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["코인", "가격", "시세", "coin", "price"])
+    @commands.command(aliases=["코인", "가격", "시세", "coin", "price", "코"])
     async def cmdCoin(self, ctx):
         async with ctx.typing():
             if self.bot.r_btc < 0:
@@ -507,7 +507,7 @@ class cmdCoin(commands.Cog):
             image = discord.File('graph.png')
         await ctx.send(file=image)
     
-    @commands.command(aliases=["랭킹", "순위", "랭크", "ranking", "rank"])
+    @commands.command(aliases=["랭킹", "순위", "랭크", "ranking", "rank", "랭"])
     async def cmdRank(self, ctx):
         async with ctx.typing():
             DATABASE_URL = os.environ['DATABASE_URL']
