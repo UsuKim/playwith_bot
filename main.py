@@ -6,7 +6,7 @@ from datetime import timedelta
 import matplotlib.pyplot as plt
 import matplotlib.font_manager
 
-# https://discord.com/api/oauth2/authorize?client_id=835763308509396993&permissions=268435456&scope=bot
+# https://discord.com/api/oauth2/authorize?client_id=835763308509396993&permissions=268823616&scope=bot
 
 # 업비트
 upbit = Upbitpy()
@@ -196,7 +196,6 @@ async def change_price():
     leg = ax1.legend(lns, labs, loc=2, framealpha=0.7)
     leg.remove()
     ax8.add_artist(leg)
-    ax1.set_ylabel(f'{data[-1][0]}')
     plt.savefig('graph.png')
     fig.clf()
     plt.close()
