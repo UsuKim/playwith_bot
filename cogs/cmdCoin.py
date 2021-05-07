@@ -503,7 +503,7 @@ class cmdCoin(commands.Cog):
                 all_money = data[i][1] + (self.bot.n_btc * data[i][2]) + (self.bot.n_eth * data[i][3]) + (self.bot.n_ltc * data[i][4]) + (self.bot.n_dot * data[i][5]) + (self.bot.n_ada * data[i][6]) + (self.bot.n_doge * data[i][7]) + (self.bot.n_xrp * data[i][15]) + (self.bot.n_trx * data[i][16])
                 m_data.append((str(user), all_money))
             m_data.sort(key=lambda x:x[1], reverse=True)
-            for j in range(0,len(m_data)):
+            for j in range(0,10):
                 des += f'{j+1}. {m_data[j][0]} | {format(m_data[j][1],",")} ₩\n'
             des += '```'
             embed=discord.Embed(title='자산 순위 TOP 10',description=des,color=0x8be653)
