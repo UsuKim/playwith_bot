@@ -47,6 +47,11 @@ for it in ticker:
     if it['market'] == 'KRW-TRX':
         bot.n_trx = int(it['trade_price'])
 
+# 데이터베이스 연결
+DATABASE_URL = os.environ['DATABASE_URL']
+bot.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+bot.cur = bot.conn.cursor()
+
 # cog 설정
 for filename in os.listdir("cogs"):
     if filename.endswith(".py"):
