@@ -1,4 +1,6 @@
-a = 'play'
-b = 'clov'
+a = 'clov'
+b = 'play'
 c = 'clov'
-print([a,b,c])
+l = [a,b,c]
+l.remove('play')
+print(l)

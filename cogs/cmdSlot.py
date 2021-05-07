@@ -102,19 +102,22 @@ class cmdSlot(commands.Cog):
                 if slot1_r == slot2_r == slot3_r:
                     money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r])*bat))
                 elif [slot1_r,slot2_r,slot3_r].count('play') == 1:
-                    l = [slot1_r,slot2_r,slot3_r].remove('play')
+                    l = [slot1_r,slot2_r,slot3_r]
+                    l.remove('play')
                     if l[0] == l[1]:
                         money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
                     else:
                         money = data[1] - bat
                 elif [slot1_r,slot2_r,slot3_r].count('dia') == 1:
-                    l = [slot1_r,slot2_r,slot3_r].remove('dia')
+                    l = [slot1_r,slot2_r,slot3_r]
+                    l.remove('dia')
                     if l[0] == l[1]:
                         money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
                     else:
                         money = data[1] - bat
                 elif [slot1_r,slot2_r,slot3_r].count('star') == 1:
-                    l = [slot1_r,slot2_r,slot3_r].remove('star')
+                    l = [slot1_r,slot2_r,slot3_r]
+                    l.remove('star')
                     if l[0] == l[1]:
                         money = data[1] - bat + round((1/(25*slots[slot1_r]*slots[slot2_r]*slots[slot3_r]*3)*bat))
                     else:
