@@ -1,8 +1,7 @@
 import asyncio,discord,os,random,psycopg2,requests
-from upbitpy import Upbitpy
 from discord.ext import commands, tasks
-from itertools import cycle
 from discord_slash import cog_ext, SlashContext
+from discord_slash.utils.manage_commands import create_option, create_choice
 
 class cmdCoin(commands.Cog):
     def __init__(self, bot):
