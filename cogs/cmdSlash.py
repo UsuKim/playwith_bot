@@ -108,16 +108,16 @@ class cmdSlashCoin(commands.Cog):
         embed.set_footer(text=f'다음 변동까지 {self.bot.time}초')
         await ctx.send(embed=embed)
 
-    @cog_ext.cog_slash(name="매수",description="선택한 암호화폐를 원하는 수량만큼 삽니다.",guild_ids=guild,options=[create_option(name="종류",description="암호화폐의 종류를 선택합니다.",option_type=3,required=True,choices=[create_choice(name="비트코인",value="btc"),create_choice(name="이더리움",value="eth"),create_choice(name="라이트코인",value="ltc"),create_choice(name="폴카닷",value="dot"),create_choice(name="에이다",value="ada"),create_choice(name="도지코인",value="doge"),create_choice(name="리플",value="xrp"),create_choice(name="트론",value="trx")]),create_option(name="수량",description="매수할 수량을 정합니다.",option_type=3,required=True)])
-    async def cmdSlashBuy(self, ctx: SlashContext, 종류: str, 수량: str):
+    @cog_ext.cog_slash(name="매수",description="선택한 암호화폐를 원하는 수량만큼 삽니다.",guild_ids=guild,options=[create_option(name="types",description="암호화폐의 종류를 선택합니다.",option_type=3,required=True,choices=[create_choice(name="비트코인",value="btc"),create_choice(name="이더리움",value="eth"),create_choice(name="라이트코인",value="ltc"),create_choice(name="폴카닷",value="dot"),create_choice(name="에이다",value="ada"),create_choice(name="도지코인",value="doge"),create_choice(name="리플",value="xrp"),create_choice(name="트론",value="trx")]),create_option(name="amount",description="매수할 수량을 정합니다.",option_type=3,required=True)])
+    async def cmdSlashBuy(self, ctx: SlashContext, types: str, amount: str):
         try:
-            _id = 종류
-            if 수량 == '모두' or 수량 == '전부' or 수량 == 'all' or 수량 == '올':
+            _id = types
+            if amount == '모두' or amount == '전부' or amount == 'all' or amount == '올':
                 _all = True
                 amount = 1
             else:
                 _all = False
-                amount = int(수량)
+                amount = int(amount)
         except:
             embed=discord.Embed(title="구매 수량이 올바르지 않습니다.",description='예)\n```/매수 비트코인 1```',color=0xb40000)
         else:
