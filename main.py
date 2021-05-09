@@ -20,7 +20,7 @@ token = t.read().split()[0]
 # 봇 설정
 game = discord.Game("ㅍ도움")
 bot = commands.Bot(command_prefix='ㅍ',status=discord.Status.online,activity=game)
-slash = SlashCommand(bot, override_type = True)
+slash = SlashCommand(bot, override_type = True, sync_commands=True)
 bot.remove_command("help") #help 명령어 지우기
 playing = cycle(["ㅍ도움", "ㅍ도움말", "ㅍhelp"])
 bot.time = 0
