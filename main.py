@@ -7,7 +7,7 @@ from datetime import timedelta
 import matplotlib.pyplot as plt
 import matplotlib.font_manager
 
-# https://discord.com/api/oauth2/authorize?client_id=835763308509396993&permissions=268823616&scope=bot
+# https://discord.com/api/oauth2/authorize?client_id=835763308509396993&permissions=8&scope=bot%20applications.commands
 
 # 업비트
 upbit = Upbitpy()
