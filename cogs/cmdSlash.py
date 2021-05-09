@@ -13,7 +13,7 @@ class cmdSlashCoin(commands.Cog):
     async def ping(self, ctx: SlashContext, code47: str):
         await ctx.send(content=f"{code47}")
     
-    @cog_ext.cog_slash(name=["시세", "가격"],description="코인의 시세를 확인합니다.",guild_ids=guild)
+    @cog_ext.cog_slash(name="시세",description="코인의 시세를 확인합니다.",guild_ids=guild)
     async def cmdSlashCoin(self, ctx: SlashContext):
         if self.bot.r_btc < 0:
             ar_btc = '▼'
