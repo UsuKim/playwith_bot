@@ -16,7 +16,7 @@ class cmdShop(commands.Cog):
         elif l_args[0] == "낚시" or l_args[0] == "낚시상점":
             page1 = {1:"1. <:low_fishinglod:842314659619930113> 하급 낚싯대",2:"2. <:normal_worm:842316324838572062> 일반 미끼"}
             des = ""
-            for i in len(page1):
+            for i in range(len(page1)):
                 des += f"page1[i+1]\n"
             embed=discord.Embed(title="낚시 상점",description=des,color=0x3a94ce)
             embed.set_footer(text='페이지 1')
