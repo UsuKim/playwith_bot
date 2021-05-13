@@ -44,14 +44,13 @@ class cmdShop(commands.Cog):
                 if numbers[react.emoji] == None:
                     embed.set_footer(text='(결제 취소)')
                 elif page1[numbers[react.emoji]][3] == 0:
-                    chan = ctx.channel
                     def worm(m):
                         try:
                             m = int(m)
                         except:
                             return False
                         else:
-                            return m.channel == chan
+                            return m.author == ctx.author and m.channel == ctx.channel
                         
                     try:
                         embed2=discord.Embed(title='구매할 수량을 입력해 주세요.',description='예)\n```10```',color=0x8be653)
@@ -84,6 +83,7 @@ class cmdShop(commands.Cog):
                 else:
                     if data[20] >= 1:
                         embed2=discord.Embed(title='낚싯대는 최대 한 개 까지만 소유 가능합니다.',color=0xb40000)
+                        embed.set_footer(text='(결제 취소)')
                         await ctx.send(embed=embed2)
                     elif page1[numbers[react.emoji]][1] > data[1]:
                         embed2=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
