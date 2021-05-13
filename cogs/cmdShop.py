@@ -45,12 +45,7 @@ class cmdShop(commands.Cog):
                     embed.set_footer(text='(결제 취소)')
                 elif page1[numbers[react.emoji]][3] == 0:
                     def worm(m):
-                        try:
-                            m = int(m)
-                        except:
-                            return False
-                        else:
-                            return m.author == ctx.author and m.channel == ctx.channel
+                        m.author == ctx.author and m.channel == ctx.channel
                         
                     try:
                         embed2=discord.Embed(title='구매할 수량을 입력해 주세요.',description='예)\n```10```',color=0x8be653)
