@@ -56,14 +56,15 @@ class cmdShop(commands.Cog):
                         embed.set_footer(text='(시간 만료)')
                     else:
                         try:
-                            amount = int(msg)
+                            print(msg)
+                            amount = int(str(msg))
                         except:
                             embed2=discord.Embed(title='구매 수량이 올바르지 않습니다.',description='예)\n```10```',color=0xb40000)
                             embed.set_footer(text='(결제 취소)')
                             await ctx.send(embed=embed2)
                         else:
                             if amount <= 0:
-                                embed2=discord.Embed(title='구매 수량이 올바르지 않습니다.',description='예)\n```10```',color=0xb40000)
+                                embed2=discord.Embed(title='구매 수량은 0 보다 커야 합니다.',description='예)\n```10```',color=0xb40000)
                                 embed.set_footer(text='(결제 취소)')
                                 await ctx.send(embed=embed2)
                             elif page1[numbers[react.emoji]][1] * amount > data[1]:
