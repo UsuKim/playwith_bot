@@ -55,26 +55,31 @@ class cmdShop(commands.Cog):
                     except asyncio.TimeoutError:
                         embed.set_footer(text='(시간 만료)')
                     else:
-                        amount = int(msg)
-                        print(amount)
-                        if amount <= 0:
+                        try:
+                            amount = int(msg)
+                        except:
                             embed2=discord.Embed(title='구매 수량이 올바르지 않습니다.',description='예)\n```10```',color=0xb40000)
                             embed.set_footer(text='(결제 취소)')
                             await ctx.send(embed=embed2)
-                        elif page1[numbers[react.emoji]][1] * amount > data[1]:
-                            embed2=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
-                            embed.set_footer(text='(결제 취소)')
-                            await ctx.send(embed=embed2)
                         else:
-                            money = data[1] - (page1[numbers[react.emoji]][1] * amount)
-                            self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
-                            self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(amount, str(ctx.author.id)))
-                            embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 수량: {amount}개\n보유 수량: {data[21]}개\n구매 금액: {format(page1[numbers[react.emoji]][1] * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
-                            embed.set_footer(text='(결제 성공)')
-                            try:
-                                await buy.edit(embed=embed2)
-                            except:
+                            if amount <= 0:
+                                embed2=discord.Embed(title='구매 수량이 올바르지 않습니다.',description='예)\n```10```',color=0xb40000)
+                                embed.set_footer(text='(결제 취소)')
                                 await ctx.send(embed=embed2)
+                            elif page1[numbers[react.emoji]][1] * amount > data[1]:
+                                embed2=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
+                                embed.set_footer(text='(결제 취소)')
+                                await ctx.send(embed=embed2)
+                            else:
+                                money = data[1] - (page1[numbers[react.emoji]][1] * amount)
+                                self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                                self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(amount, str(ctx.author.id)))
+                                embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 수량: {amount}개\n보유 수량: {data[21]}개\n구매 금액: {format(page1[numbers[react.emoji]][1] * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                                embed.set_footer(text='(결제 성공)')
+                                try:
+                                    await buy.edit(embed=embed2)
+                                except:
+                                    await ctx.send(embed=embed2)
                 else:
                     if data[20] >= 1:
                         embed2=discord.Embed(title='낚싯대는 최대 한 개 까지만 소유 가능합니다.',color=0xb40000)
