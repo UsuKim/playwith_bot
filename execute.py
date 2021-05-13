@@ -1,2 +1,3 @@
-수량 = '1'
-print(int(수량))
+args = []
+args.append(None)
+print(args)
