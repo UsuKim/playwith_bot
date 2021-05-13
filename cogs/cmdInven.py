@@ -12,6 +12,8 @@ class cmdInven(commands.Cog):
         fs = {1:'하급 낚싯대'}
         description = ''
         description += f'낚싯대: {fs[data[22]]}({data[20]})'
+        embed=discord.Embed(title='인벤토리',description=description,color=0x8be653)
+        await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(cmdInven(bot))
