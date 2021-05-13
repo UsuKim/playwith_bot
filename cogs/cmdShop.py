@@ -20,8 +20,19 @@ class cmdShop(commands.Cog):
                 des += f"{page1[i+1]}\n"
             embed=discord.Embed(title="낚시 상점",description=des,color=0x3a94ce)
             embed.set_footer(text='페이지 1')
+            global shop
             shop = await ctx.send(embed=embed)
             await shop.add_reaction("1️⃣")
+
+            def one(react, user):
+                return user == ctx.author and str(react.emoji) == "1️⃣"
+            
+            try:
+                react, user = await self.bot.wait_for("reaction_add", timeout=30.0, check=one)
+            except asyncio.TimeoutError:
+                await ctx.send("시간이 지났음")
+            else:
+                await ctx.send("성공")
 
 
 def setup(bot):
