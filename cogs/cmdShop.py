@@ -14,30 +14,60 @@ class cmdShop(commands.Cog):
             embed.add_field(name="낚시상점", value="각종 낚시 용품들을 팝니다.\n`ㅍ상점 낚시`")
             await ctx.send(embed=embed)
         elif l_args[0] == "낚시" or l_args[0] == "낚시상점":
-            page1 = {1:"1. <:low_fishinglod:842314659619930113> 하급 낚싯대",2:"2. <:normal_worm:842316324838572062> 일반 미끼"}
+            page1 = [["하급 낚싯대",100000,"<:low_fishinglod:842314659619930113>",100],["일반 미끼",500,"<:normal_worm:842316324838572062>",0]]
+            numbers = {"1️⃣":0,"2️⃣":1}
             des = ""
-            for i in range(len(page1)):
-                des += f"{page1[i+1]}\n"
+            num = 0
+            for i in page1:
+                num += 1
+                if i[3] != 0:
+                    dur = f'({i[3]})'
+                des += f"{num}. {i[2]} {i[0]}{dur} | {format(i[1],',')} ₩\n"
             embed=discord.Embed(title="낚시 상점",description=des,color=0x3a94ce)
             embed.set_footer(text='페이지 1')
-            global shop
             shop = await ctx.send(embed=embed)
             await shop.add_reaction("1️⃣")
             await shop.add_reaction("2️⃣")
 
-            def one(react, user):
+            def check(react, user):
                 return user == ctx.author and str(react.emoji) in ['1️⃣', '2️⃣']
             
             try:
-                react, user = await self.bot.wait_for("reaction_add", timeout=30.0, check=one)
+                react, user = await self.bot.wait_for("reaction_add", timeout=30.0, check=check)
             except asyncio.TimeoutError:
-                embed.set_footer(text='(시간 만료)')
+                embed.set_footer(text='(만료)')
                 await shop.edit(embed=embed)
             else:
-                if str(react.emoji) == '1️⃣':
-                    await ctx.send("1 선택")
-                elif str(react.emoji) == '2️⃣':
-                    await ctx.send("2 선택")
+                self.bot.cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
+                data = self.bot.cur.fetchone()
+                if page1[numbers[react.emoji]][1] > data[1]:
+                    embed2=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
+                elif page1[numbers[react.emoji]][3] == 0:
+                    chan = ctx.channel
+                    def worm(m):
+                        try:
+                            m = int(m)
+                        except:
+                            return False
+                        else:
+                            return m.channel == chan
+                        
+                    try:
+                        msg = await self.bot.wait_for('message', timeout=10.0, check=worm)
+                    except asyncio.TimeoutError:
+                        embed.set_footer(text='(만료)')
+                        await shop.edit(embed=embed)
+                    else:
+                        amount = int(msg)
+                        money = data[1] - (page1[numbers[react.emoji]][1] * amount)
+                        self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                        self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(amount, str(ctx.author.id)))
+                else:
+                    money = data[1] - page1[numbers[react.emoji]][1]
+                    self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                    self.bot.cur.execute("UPDATE user_data SET fishingrod = %s WHERE id = %s",(page1[numbers[react.emoji]][3], str(ctx.author.id)))
+                embed.set_footer(text='(만료)')
+                await shop.edit(embed=embed)
 
 
 def setup(bot):
