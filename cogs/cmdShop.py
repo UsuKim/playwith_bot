@@ -94,6 +94,9 @@ class cmdShop(commands.Cog):
                         money = data[1] - page1[numbers[react.emoji]][1]
                         self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
                         self.bot.cur.execute("UPDATE user_data SET fishingrod = %s WHERE id = %s",(page1[numbers[react.emoji]][3], str(ctx.author.id)))
+                        if page1[numbers[react.emoji]][3] == 100:
+                            fr_type = 1
+                        self.bot.cur.execute("UPDATE user_data SET fr_type = %s WHERE id = %s",(fr_type, str(ctx.author.id)))
                         embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
                         embed.set_footer(text='(결제 성공)')
                         await ctx.send(embed=embed2)
