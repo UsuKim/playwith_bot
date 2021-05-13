@@ -23,16 +23,21 @@ class cmdShop(commands.Cog):
             global shop
             shop = await ctx.send(embed=embed)
             await shop.add_reaction("1️⃣")
+            await shop.add_reaction("2️⃣")
 
             def one(react, user):
-                return user == ctx.author and str(react.emoji) == "1️⃣"
+                return user == ctx.author and str(react.emoji) in ['1️⃣', '2️⃣']
             
             try:
                 react, user = await self.bot.wait_for("reaction_add", timeout=30.0, check=one)
             except asyncio.TimeoutError:
-                await ctx.send("시간이 지났음")
+                embed.set_footer(text='(시간 만료)')
+                await shop.edit(embed=embed)
             else:
-                await ctx.send("성공")
+                if str(react.emoji) == '1️⃣':
+                    await ctx.send("1 선택")
+                elif str(react.emoji) == '2️⃣':
+                    await ctx.send("2 선택")
 
 
 def setup(bot):
