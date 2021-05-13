@@ -21,7 +21,7 @@ class cmdShop(commands.Cog):
             embed=discord.Embed(title="낚시 상점",description=des,color=0x3a94ce)
             embed.set_footer(text='페이지 1')
             shop = await ctx.send(embed=embed)
-            await shop.add_reaction("one")
+            await shop.add_reaction("1️⃣")
 
 
 def setup(bot):
