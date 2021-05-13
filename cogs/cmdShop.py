@@ -15,7 +15,7 @@ class cmdShop(commands.Cog):
             await ctx.send(embed=embed)
         elif l_args[0] == "낚시" or l_args[0] == "낚시상점":
             page1 = [["하급 낚싯대",100000,"<:low_fishinglod:842314659619930113>",100],["일반 미끼",500,"<:normal_worm:842316324838572062>",0]]
-            numbers = {"1️⃣":0,"2️⃣":1}
+            numbers = {"❌":None,"1️⃣":0,"2️⃣":1}
             des = ""
             num = 0
             for i in page1:
@@ -29,9 +29,10 @@ class cmdShop(commands.Cog):
             shop = await ctx.send(embed=embed)
             await shop.add_reaction("1️⃣")
             await shop.add_reaction("2️⃣")
+            await shop.add_reaction("❌")
 
             def check(react, user):
-                return user == ctx.author and str(react.emoji) in ['1️⃣', '2️⃣']
+                return user == ctx.author and str(react.emoji) in ['1️⃣', '2️⃣', '❌']
             
             try:
                 react, user = await self.bot.wait_for("reaction_add", timeout=30.0, check=check)
@@ -41,11 +42,10 @@ class cmdShop(commands.Cog):
             else:
                 self.bot.cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
                 data = self.bot.cur.fetchone()
-                if page1[numbers[react.emoji]][1] > data[1]:
+                if numbers[react.emoji] == None:
+                    pass
+                elif page1[numbers[react.emoji]][1] > data[1]:
                     embed2=discord.Embed(title='잔액이 부족합니다.',description=f'```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(data[1],",")} ₩```',color=0xb40000)
-                    await ctx.send(embed=embed2)
-                elif data[20] >= 1:
-                    embed2=discord.Embed(title='낚싯대는 최대 한 개 까지만 소유 가능합니다.',color=0xb40000)
                     await ctx.send(embed=embed2)
                 elif page1[numbers[react.emoji]][3] == 0:
                     chan = ctx.channel
@@ -83,12 +83,19 @@ class cmdShop(commands.Cog):
                             except:
                                 await ctx.send(embed=embed2)
                 else:
-                    money = data[1] - page1[numbers[react.emoji]][1]
-                    self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
-                    self.bot.cur.execute("UPDATE user_data SET fishingrod = %s WHERE id = %s",(page1[numbers[react.emoji]][3], str(ctx.author.id)))
-                    embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
-                    await ctx.send(embed-embed2)
-                embed.set_footer(text='(결제 성공)')
+                    if data[20] >= 1:
+                        embed2=discord.Embed(title='낚싯대는 최대 한 개 까지만 소유 가능합니다.',color=0xb40000)
+                        await ctx.send(embed=embed2)
+                    else:
+                        money = data[1] - page1[numbers[react.emoji]][1]
+                        self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
+                        self.bot.cur.execute("UPDATE user_data SET fishingrod = %s WHERE id = %s",(page1[numbers[react.emoji]][3], str(ctx.author.id)))
+                        embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 금액: {format(page1[numbers[react.emoji]][1],",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                        await ctx.send(embed-embed2)
+                if numbers[react.emoji] == None:
+                    embed.set_footer(text='(결제 취소)')
+                else:
+                    embed.set_footer(text='(결제 성공)')
                 await shop.edit(embed=embed)
 
 
