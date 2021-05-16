@@ -10,9 +10,10 @@ class cmdFishing(commands.Cog):
     async def cmdFishing(self, ctx, *args):
         if len(args) != 0:
             if args[0] == '상점':
-                cmdShop(self.bot).cmdShop(ctx, '낚시')
-        embed=discord.Embed(title='미끼를 선택해 주세요.',color=0x8be653)
-        await ctx.send(embed=embed)
+                await cmdShop(self.bot).cmdShop(ctx, '낚시')
+        else:
+            embed=discord.Embed(title='미끼를 선택해 주세요.',color=0x8be653)
+            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(cmdFishing(bot))
