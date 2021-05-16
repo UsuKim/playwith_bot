@@ -7,7 +7,7 @@ class cmdFishing(commands.Cog):
         self.bot = bot
     
     @commands.command(aliases=["낚시", "낚", "fishing", "fish"])
-    async def cmdInven(self, ctx, *args):
+    async def cmdFishing(self, ctx, *args):
         if len(args) != 0:
             if args[0] == '상점':
                 cmdShop(ctx, '낚시')
