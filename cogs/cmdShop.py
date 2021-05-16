@@ -76,7 +76,7 @@ class cmdShop(commands.Cog):
                                 self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
                                 worms = data[21] + amount
                                 self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(worms, str(ctx.author.id)))
-                                embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 수량: {amount}개\n보유 수량: {data[21]}개\n구매 금액: {format(page1[numbers[react.emoji]][1] * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
+                                embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 수량: {amount}개\n보유 수량: {worms}개\n구매 금액: {format(page1[numbers[react.emoji]][1] * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
                                 embed.set_footer(text='(결제 성공)')
                                 try:
                                     await buy.edit(embed=embed2)
