@@ -12,8 +12,14 @@ class cmdFishing(commands.Cog):
             if args[0] == '상점':
                 await cmdShop(self.bot).cmdShop(self, ctx, '낚시')
         else:
-            embed=discord.Embed(title='미끼를 선택해 주세요.',color=0x8be653)
-            await ctx.send(embed=embed)
+            self.bot.cur.execute("SELECT * FROM user_data WHERE id = %s", (str(ctx.author.id),))
+            data = self.bot.cur.fetchone()
+            description = ''
+            description += f'<:normal_worm:842316324838572062> 일반 미끼: {data[21]}'
+            embed=discord.Embed(title='미끼를 선택해 주세요.',description=description,color=0x8be653)
+            worms = await ctx.send(embed=embed)
+            normal = self.bot.get_emoji(842316324838572062)
+            await worms.add_reaction(normal)
 
 def setup(bot):
     bot.add_cog(cmdFishing(bot))

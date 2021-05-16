@@ -56,7 +56,6 @@ class cmdShop(commands.Cog):
                         embed.set_footer(text='(시간 만료)')
                     else:
                         try:
-                            print(msg.content)
                             amount = int(msg.content)
                         except:
                             embed2=discord.Embed(title='구매 수량이 올바르지 않습니다.',description='예)\n```10```',color=0xb40000)
