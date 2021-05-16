@@ -14,7 +14,7 @@ class cmdShop(commands.Cog):
             embed.add_field(name="낚시상점", value="각종 낚시 용품들을 팝니다.\n`ㅍ상점 낚시`")
             await ctx.send(embed=embed)
         elif l_args[0] == "낚시" or l_args[0] == "낚시상점":
-            page1 = [["하급 낚싯대",100000,"<:low_fishinglod:842314659619930113>",100],["일반 미끼",500,"<:normal_worm:842316324838572062>",0]]
+            page1 = [["하급 낚싯대",100000,"<:low_fishinglod:842314659619930113>",100],["일반 미끼",100,"<:normal_worm:842316324838572062>",0]]
             numbers = {"❌":None,"1️⃣":0,"2️⃣":1}
             des = ""
             num = 0
@@ -74,7 +74,8 @@ class cmdShop(commands.Cog):
                             else:
                                 money = data[1] - (page1[numbers[react.emoji]][1] * amount)
                                 self.bot.cur.execute("UPDATE user_data SET money = %s WHERE id = %s",(money, str(ctx.author.id)))
-                                self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(amount, str(ctx.author.id)))
+                                worms = data[21] + amount
+                                self.bot.cur.execute("UPDATE user_data SET normal_worm = %s WHERE id = %s",(worms, str(ctx.author.id)))
                                 embed2=discord.Embed(title='구매 완료',description=f'{page1[numbers[react.emoji]][2]} {page1[numbers[react.emoji]][0]}\n```구매 수량: {amount}개\n보유 수량: {data[21]}개\n구매 금액: {format(page1[numbers[react.emoji]][1] * amount,",")} ₩\n잔여 금액: {format(money,",")} ₩```',color=0x8be653)
                                 embed.set_footer(text='(결제 성공)')
                                 try:
