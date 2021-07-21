@@ -12,9 +12,10 @@ import matplotlib.font_manager
 upbit = Upbitpy()
 
 # 토큰 가져오기
-token_path = os.path.dirname( os.path.abspath( __file__ ) )+"/token.txt"
-t = open(token_path,"r",encoding="utf-8")
-token = t.read().split()[0]
+# token_path = os.path.dirname( os.path.abspath( __file__ ) )+"/token.txt"
+# t = open(token_path,"r",encoding="utf-8")
+# token = t.read().split()[0]
+token = os.environ['TOKEN']
 
 # 봇 설정
 game = discord.Game("ㅍ도움")
